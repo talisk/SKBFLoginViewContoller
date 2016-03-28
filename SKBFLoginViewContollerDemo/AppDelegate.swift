@@ -1,8 +1,9 @@
 //
-//  AppDelegate.swift
-//  SKBFLoginViewContollerDemo
+//  SKBFLoginViewController.swift
+//  SKBFLoginViewControllerDemo
 //
-//  Created by 孙恺 on 16/3/28.
+//  Created by 孙恺 on 16/3/26.
+//  http://www.talisk.cn/
 //  Copyright © 2016年 sunkai. All rights reserved.
 //
 
