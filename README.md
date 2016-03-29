@@ -6,7 +6,7 @@
 
 ## 预览图
 
-![https://github.com/talisk/SKBFLoginViewContoller/preview.gif](https://github.com/talisk/SKBFLoginViewContoller/preview.gif)
+![https://github.com/talisk/SKBFLoginViewContoller/blob/master/preview.gif](https://github.com/talisk/SKBFLoginViewContoller/blob/master/preview.gif)
 
 ## 使用方法
 
