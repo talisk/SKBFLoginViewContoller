@@ -4,6 +4,10 @@
 
 背景图自动变换，登录、注册按钮在底部随键盘高度自动调整位置。
 
+## 预览图
+
+![https://github.com/talisk/SKBFLoginViewContoller/preview.gif](https://github.com/talisk/SKBFLoginViewContoller/preview.gif)
+
 ## 使用方法
 
 1. 将Classes拖到你的项目中，替换你自己的图片。
