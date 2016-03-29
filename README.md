@@ -28,4 +28,4 @@
 
 ## 版权
 
-使用MIT许可协议。转载请注明出处。talisk斯温（http://www.talisk.cn/）
+使用MIT许可协议。转载请注明出处。talisk斯温 http://www.talisk.cn/
