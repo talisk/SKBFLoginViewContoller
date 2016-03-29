@@ -27,33 +27,28 @@ class SKBFLoginViewController: UIViewController {
         print("Textfield format validation.")
     }
     
-    // TODO: Change style.
+    // MARK: Defaults style
     var blurEffectStyle: UIBlurEffectStyle = .Light
     
-    // TODO: Change images array.
     var backgroundArray = [UIImage(named: "img1.jpg"),UIImage(named:"img2.jpg"), UIImage(named: "img3.jpg"), UIImage(named: "img4.jpg"), UIImage(named: "img5.jpg")]
     
     // MARK: Outlets for UI Elements and buttons bottom constraints
-    // TODO: Link these IBOutlets to xib.
-    @IBOutlet weak var leftBtnBottomConstraint:  NSLayoutConstraint!
-    @IBOutlet weak var rightBtnBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageView:                UIImageView!
-    @IBOutlet weak var usernameField:            UITextField!
-    @IBOutlet weak var passwordField:            UITextField!
-    @IBOutlet weak var confirmField:             UITextField!
-    @IBOutlet weak var leftBtn:                  UIButton!
-    @IBOutlet weak var rightBtn:                 UIButton!
+    var imageView:                UIImageView!
+    var usernameField:            UITextField!
+    var passwordField:            UITextField!
+    var confirmField:             UITextField!
+    var leftBtn:                  UIButton!
+    var rightBtn:                 UIButton!
     
-    // MARK: ViewController mode
+    // MARK: Image changing and mode switch.
+    private var idx: Int = 0
+    
     enum ViewContollerMode {
         case MainPage
         case Login
         case Signup
     }
-    var currentMode: ViewContollerMode
-    
-    // MARK: Global Variables for Changing Image Functionality.
-    private var idx: Int = 0
+    var currentMode: ViewContollerMode = .MainPage
     
     // MARK: Singleton private init methods
     private override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -81,38 +76,66 @@ class SKBFLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Default mode.
-        currentMode = .MainPage
+        controlSetup()
         
-        // Default buttons settings.
-        buttonAppearanceSetup(leftBtn)
-        buttonAppearanceSetup(rightBtn)
+        NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(SKBFLoginViewController.changeImage), userInfo: nil, repeats: true)
+    }
+    
+    // MARK: UI Setup
+    
+    // Control setup
+    
+    private func controlSetup() {
+        
+        // Buttons
+        
+        leftBtn = getButton()
+        rightBtn = getButton()
+        
+        leftBtn.addTarget(self, action: #selector(SKBFLoginViewController.leftBtnPressed(_:)), forControlEvents: .TouchUpInside)
+        rightBtn.addTarget(self, action: #selector(SKBFLoginViewController.rightBtnPressed(_:)), forControlEvents: .TouchUpInside)
+        
+        let screenWidth = UIScreen.mainScreen().bounds.size.width
+        let screenHeight = UIScreen.mainScreen().bounds.size.height
+        
+        imageView = UIImageView(frame: CGRectMake(0, 0, screenWidth, screenHeight))
+        imageView.contentMode = .ScaleAspectFill
+        
+        leftBtn.frame = CGRectMake(0, 0, screenWidth*0.4, 28)
+        rightBtn.frame = CGRectMake(0, 0, screenWidth*0.4, 28)
+        leftBtn.center = CGPointMake(screenWidth*0.25, screenHeight-42)
+        rightBtn.center = CGPointMake(screenWidth*0.75, screenHeight-42)
+        
+        // Fields
+        
+        usernameField = getField()
+        passwordField = getField()
+        confirmField = getField()
+        
+        usernameField.placeholder = "Username"
+        passwordField.placeholder = "Password"
+        confirmField.placeholder = "Confrim"
+        
+        usernameField.frame = CGRectMake(0, 0, 0.85*screenWidth, 34)
+        passwordField.frame = CGRectMake(0, 0, 0.85*screenWidth, 34)
+        confirmField.frame = CGRectMake(0, 0, 0.85*screenWidth, 34)
+        usernameField.center = CGPointMake(screenWidth/2, 44)
+        passwordField.center = CGPointMake(screenWidth/2, 88)
+        confirmField.center = CGPointMake(screenWidth/2, 132)
+        
+        self.view.addSubview(imageView)
+        self.view.addSubview(leftBtn)
+        self.view.addSubview(rightBtn)
+        self.view.addSubview(usernameField)
+        self.view.addSubview(passwordField)
+        self.view.addSubview(confirmField)
+        
         leftBtn.setTitle("Login", forState: .Normal)
         rightBtn.setTitle("Sign up", forState: .Normal)
-        
-        // Gradient animation of controls.
-        usernameField.alpha = 0;
-        passwordField.alpha = 0;
-        confirmField.alpha  = 0;
-        leftBtn.alpha       = 0;
-        rightBtn.alpha      = 0;
-        
-        UIView.animateWithDuration(0.7, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.usernameField.alpha = 1.0
-            self.passwordField.alpha = 1.0
-            self.confirmField.alpha  = 1.0
-            self.leftBtn.alpha       = 1.0
-            self.rightBtn.alpha      = 1.0
-            }, completion: nil)
         
         usernameField.hidden = true
         passwordField.hidden = true
         confirmField.hidden  = true
-        
-        // Notifiying for Changes in the textFields
-        usernameField.addTarget(self, action: #selector(SKBFLoginViewController.textFieldDidEndEditing), forControlEvents: UIControlEvents.EditingDidEnd)
-        passwordField.addTarget(self, action: #selector(SKBFLoginViewController.textFieldDidEndEditing), forControlEvents: UIControlEvents.EditingDidEnd)
-        confirmField.addTarget(self, action: #selector(SKBFLoginViewController.textFieldDidEndEditing), forControlEvents: UIControlEvents.EditingDidEnd)
         
         // Visual Effect View for background
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: blurEffectStyle)) as UIVisualEffectView
@@ -121,11 +144,41 @@ class SKBFLoginViewController: UIViewController {
         imageView.image = backgroundArray[0]
         imageView.addSubview(visualEffectView)
         
-        NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(SKBFLoginViewController.changeImage), userInfo: nil, repeats: true)
+        // Notifiying for Changes in the textFields
+        let fieldEndEditingSelector = #selector(SKBFLoginViewController.textFieldDidEndEditing)
+        
+        usernameField.addTarget(self, action: fieldEndEditingSelector, forControlEvents: UIControlEvents.EditingDidEnd)
+        passwordField.addTarget(self, action: fieldEndEditingSelector, forControlEvents: UIControlEvents.EditingDidEnd)
+        confirmField.addTarget(self, action: fieldEndEditingSelector, forControlEvents: UIControlEvents.EditingDidEnd)
+    }
+    
+    
+    // Factory method.
+    private func getField() -> UITextField {
+        let field = UITextField()
+        field.borderStyle = .RoundedRect
+        field.layer.cornerRadius = 8.0
+        field.layer.borderWidth = 1.6;
+        field.layer.borderColor = UIColor.whiteColor().CGColor
+        return field
+    }
+    
+    // Factory method.
+    private func getButton() -> UIButton {
+        let button = UIButton(type: .Custom)
+        button.tintColor = UIColor.whiteColor()
+        button.setTitleColor(UIColor.whiteColor(), forState: .Disabled)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button.backgroundColor = UIColor.clearColor()
+        button.layer.cornerRadius = 8.0
+        button.clipsToBounds = true
+        button.layer.borderWidth = 1;
+        button.layer.borderColor = UIColor.whiteColor().CGColor
+        return button
     }
     
     // MARK: Mode switch
-    @IBAction func leftBtnPressed(sender: UIButton) {
+    func leftBtnPressed(sender: UIButton) {
         leftBtn.enabled = false
         
         switch currentMode {
@@ -148,7 +201,7 @@ class SKBFLoginViewController: UIViewController {
         }
     }
     
-    @IBAction func rightBtnPressed(sender: UIButton) {
+    func rightBtnPressed(sender: UIButton) {
         rightBtn.enabled = false
         
         switch currentMode {
@@ -254,21 +307,19 @@ class SKBFLoginViewController: UIViewController {
         
         let yOffset = endKeyboardRect!.origin.y - beginKeyboardRect!.origin.y
         
-        self.leftBtnBottomConstraint.constant -= yOffset
-        self.rightBtnBottomConstraint.constant -= yOffset
+        UIView.animateWithDuration(1, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { 
+            var leftBtnFrame = self.leftBtn.frame
+            var rightBtnFrame = self.rightBtn.frame
+            
+            leftBtnFrame.origin.y += yOffset
+            rightBtnFrame.origin.y += yOffset
+            
+            self.leftBtn.frame = leftBtnFrame
+            self.rightBtn.frame = rightBtnFrame
+            }, completion: nil)
     }
     
-    // Utils
-    private func buttonAppearanceSetup(button: UIButton) {
-        button.tintColor = UIColor.whiteColor()
-        button.setTitleColor(UIColor.whiteColor(), forState: .Disabled)
-        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        button.backgroundColor = UIColor.clearColor()
-        button.layer.cornerRadius = 8.0
-        button.clipsToBounds = true
-        button.layer.borderWidth = 1;
-        button.layer.borderColor = UIColor.whiteColor().CGColor
-    }
+    // MARK: Utils
     
     func changeImage(){
         if idx == backgroundArray.count-1 {
