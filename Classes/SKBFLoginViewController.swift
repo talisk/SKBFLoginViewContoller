@@ -31,7 +31,7 @@ class SKBFLoginViewController: UIViewController {
     var blurEffectStyle: UIBlurEffectStyle = .Light
     
     // TODO: Change images array.
-    var backgroundArray = [UIImage(named: "angelababy1.jpg"),UIImage(named:"angelababy2.jpg"), UIImage(named: "angelababy3.jpg"), UIImage(named: "angelababy4.jpg"), UIImage(named: "angelababy5.jpg")]
+    var backgroundArray = [UIImage(named: "img1.jpg"),UIImage(named:"img2.jpg"), UIImage(named: "img3.jpg"), UIImage(named: "img4.jpg"), UIImage(named: "img5.jpg")]
     
     // MARK: Outlets for UI Elements and buttons bottom constraints
     // TODO: Link these IBOutlets to xib.
