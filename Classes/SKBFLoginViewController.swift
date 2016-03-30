@@ -17,13 +17,6 @@ class SKBFLoginViewController: UIViewController {
     // TODO: Implement them.
     func login() {
         print("Login button pressed")
-        dismissViewControllerAnimated(true) {
-            for v in self.view.subviews {
-                v.removeFromSuperview()
-            }
-            self.view = nil
-            self.backgroundArray = []
-        }
     }
     
     func signup() {
@@ -32,6 +25,17 @@ class SKBFLoginViewController: UIViewController {
     
     func textFieldDidEndEditing() {
         print("Textfield format validation.")
+    }
+    
+    // TODO: When you need dismiss self, please call dismiss
+    func dismiss() {
+        dismissViewControllerAnimated(true) {
+            for v in self.view.subviews {
+                v.removeFromSuperview()
+            }
+            self.view = nil
+            self.backgroundArray = []
+        }
     }
     
     // MARK: Defaults style
