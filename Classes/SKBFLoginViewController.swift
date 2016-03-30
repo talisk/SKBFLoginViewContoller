@@ -17,6 +17,13 @@ class SKBFLoginViewController: UIViewController {
     // TODO: Implement them.
     func login() {
         print("Login button pressed")
+        dismissViewControllerAnimated(true) {
+            for v in self.view.subviews {
+                v.removeFromSuperview()
+            }
+            self.view = nil
+            self.backgroundArray = []
+        }
     }
     
     func signup() {
@@ -30,7 +37,7 @@ class SKBFLoginViewController: UIViewController {
     // MARK: Defaults style
     var blurEffectStyle: UIBlurEffectStyle = .Light
     
-    var backgroundArray = [UIImage(named: "img1.jpg"),UIImage(named:"img2.jpg"), UIImage(named: "img3.jpg"), UIImage(named: "img4.jpg"), UIImage(named: "img5.jpg")]
+    var backgroundArray: Array<UIImage>
     
     // MARK: Outlets for UI Elements and buttons bottom constraints
     var imageView:                UIImageView!
@@ -41,6 +48,7 @@ class SKBFLoginViewController: UIViewController {
     var rightBtn:                 UIButton!
     
     // MARK: Image changing and mode switch.
+    var timer: NSTimer
     private var idx: Int = 0
     
     enum ViewContollerMode {
@@ -53,6 +61,8 @@ class SKBFLoginViewController: UIViewController {
     // MARK: Singleton private init methods
     private override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         self.currentMode = .MainPage
+        timer = NSTimer()
+        backgroundArray = Array()
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -64,11 +74,15 @@ class SKBFLoginViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        currentMode = .MainPage
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SKBFLoginViewController.keyboardWillChangeFrame(_:)), name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        timer.invalidate()
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
@@ -76,9 +90,23 @@ class SKBFLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        backgroundArray =
+            [UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img1", ofType: "jpg")!)!,
+             UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img2", ofType: "jpg")!)!,
+             UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img3", ofType: "jpg")!)!,
+             UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img4", ofType: "jpg")!)!,
+             UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img5", ofType: "jpg")!)!]
+        
         controlSetup()
         
-        NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(SKBFLoginViewController.changeImage), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(6, target: self, selector: #selector(SKBFLoginViewController.changeImage), userInfo: nil, repeats: true)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        if self.view.window == nil {
+            self.view = nil
+        }
     }
     
     // MARK: UI Setup
