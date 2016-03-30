@@ -17,6 +17,7 @@ class SKBFLoginViewController: UIViewController {
     // TODO: Implement them.
     func login() {
         print("Login button pressed")
+        dismiss()
     }
     
     func signup() {
@@ -100,6 +101,12 @@ class SKBFLoginViewController: UIViewController {
              UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img3", ofType: "jpg")!)!,
              UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img4", ofType: "jpg")!)!,
              UIImage.init(contentsOfFile: NSBundle.mainBundle().pathForResource("img5", ofType: "jpg")!)!]
+
+        backgroundArray = [UIImage(named: "img1.jpg")!,
+                           UIImage(named: "img2.jpg")!,
+                           UIImage(named: "img3.jpg")!,
+                           UIImage(named: "img4.jpg")!,
+                           UIImage(named: "img5.jpg")!]
         
         controlSetup()
         
