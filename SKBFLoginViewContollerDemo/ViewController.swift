@@ -18,11 +18,13 @@ class ViewController: UIViewController {
 
     @IBAction func presentVC(sender: AnyObject) {
         
-        let loginVC = SKBFLoginViewController.sharedInstance // Singleton
-        loginVC.blurEffectStyle = .Light // Default style is light
-        loginVC.backgroundArray = [UIImage(named: "img1.jpg"),UIImage(named:"img2.jpg"), UIImage(named: "img3.jpg"), UIImage(named: "img4.jpg"), UIImage(named: "img5.jpg")]
-
+//        let loginVC = SKBFLoginViewController.sharedInstance // Singleton
+//        loginVC.blurEffectStyle = .Light // Default style is light
+//        loginVC.backgroundArray = [UIImage(named: "img1.jpg"),UIImage(named:"img2.jpg"), UIImage(named: "img3.jpg"), UIImage(named: "img4.jpg"), UIImage(named: "img5.jpg")]
+//
         presentViewController(SKBFLoginViewController.sharedInstance, animated: true, completion: nil)
+        
+        
     
     }
     
